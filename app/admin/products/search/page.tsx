@@ -18,12 +18,12 @@ const searchProducts = async (searchTerm: string) => {
     return products;
 }
 
-const SearchPage = async ({ searchParams }: { searchParams: { search: string } }) => {
-
-    const products = await searchProducts(searchParams.search)
+const SearchPage = async ({ searchParams }: { searchParams: Promise<{ search: string }> }) => {
+    const { search } = await searchParams
+    const products = await searchProducts(search)
     return (
         <div>
-            <Heading>Resultados de búsqueda: {searchParams.search}</Heading>
+            <Heading>Resultados de búsqueda: {search}</Heading>
             <div className="flex flex-col lg:flex-row lg:justify-end gap-5">
                 <ProductSearch />
             </div>

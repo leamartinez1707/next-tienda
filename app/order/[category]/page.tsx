@@ -11,8 +11,10 @@ const getProductsByCategory = async (category: string) => {
         }
     })
 }
-const CategoryPage = async ({ params }: { params: { category: string } }) => {
-    const products = await getProductsByCategory(params.category)
+
+const CategoryPage = async ({ params }: { params: Promise<{ category: string }> }) => {
+    const { category } = await params
+    const products = await getProductsByCategory(category)
     return (
         <>
             <Heading>Elige y personaliza tu pedido</Heading>
