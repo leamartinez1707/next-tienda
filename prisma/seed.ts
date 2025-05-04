@@ -7,12 +7,22 @@ const prisma = new PrismaClient();
 
 async function main() {
     try {
-        await prisma.category.createMany({
-            data: categories,
-        });
-        await prisma.product.createMany({
-            data: products,
-        });
+        for (const category of categories) {
+            await prisma.category.create({ data: category });
+        }
+
+        for (const product of products) {
+            await prisma.product.create({
+                data: {
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    category: {
+                        connect: { id: product.categoryId.toString() },
+                    },
+                },
+            });
+        }
     } catch (error) {
         console.error(error);
 
