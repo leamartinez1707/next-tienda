@@ -17,7 +17,7 @@ export const completeOrder = async (formData: FormData) => {
         try {
             await prisma.order.update({
                 where: {
-                    id: result.data.orderId
+                    id: result.data.orderId.toString()
                 },
                 data: {
                     status: true,

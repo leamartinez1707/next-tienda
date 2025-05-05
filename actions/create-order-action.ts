@@ -20,7 +20,9 @@ export const handleCreateOrder = async (data: unknown) => {
                 total: result.data.total,
                 orderProducts: {
                     create: result.data.order.map(product => ({
-                        productId: product.id,
+                        product: {
+                            connect: { id: String(product.id) }
+                        },
                         quantity: product.quantity
                     }))
                 }

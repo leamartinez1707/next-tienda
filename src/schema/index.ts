@@ -33,8 +33,6 @@ export const ProductSchema = z.object({
         .or(z.number().min(1, { message: 'La categoría es obligatoria' })),
     categoryId: z.string()
         .trim()
-        .transform((value) => parseInt(value))
-        .refine((value) => value > 0, { message: 'La categoría es obligatoria' })
-        .or(z.number().min(1, { message: 'La categoría es obligatoria' })),
+        .refine((value) => !value, { message: 'La categoría es obligatoria' }),
     image: z.string().min(1, "La imagen es obligatoria")
 })
