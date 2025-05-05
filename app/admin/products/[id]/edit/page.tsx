@@ -5,7 +5,7 @@ import EditProductForm from '@/components/products/EditProductForm'
 import ProductForm from '@/components/products/ProductForm'
 import GoBackButton from '@/components/ui/GoBackButton'
 
-const getProductById = async (id: number) => {
+const getProductById = async (id: string) => {
     const product = await prisma.product.findUnique({
         where: {
             id
@@ -16,7 +16,7 @@ const getProductById = async (id: number) => {
 
 const EditProduct = async ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params
-    const product = await getProductById(+id)
+    const product = await getProductById(id)
     if (!product) {
         notFound()
     }
