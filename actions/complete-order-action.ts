@@ -6,13 +6,12 @@ import { OrderIdSchema } from "@/src/schema";
 // Si es una accion hay que definirle que es server
 
 export const completeOrder = async (formData: FormData) => {
-
+    console.log(formData.get('order_id'))
     const data = {
         orderId: formData.get('order_id')!
     }
 
     const result = OrderIdSchema.safeParse(data)
-
     if (result.success) {
         try {
             await prisma.order.update({
@@ -25,6 +24,7 @@ export const completeOrder = async (formData: FormData) => {
                 }
             })
             revalidatePath('/admin/orders')
+            return { success: true }
         } catch (error) {
             console.error(error)
         }

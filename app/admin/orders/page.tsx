@@ -1,9 +1,11 @@
 'use client'
 
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 import OrderCard from '@/components/order/OrderCard'
 import Heading from '@/components/ui/Heading'
 import { OrderWithProducts } from "@/src/types"
+import { orderChannel } from "@/src/utils/orderChannel"
+import { useEffect } from "react"
 
 const OrdersPage = () => {
 
@@ -13,12 +15,28 @@ const OrdersPage = () => {
         refreshInterval: 600000,
         revalidateOnFocus: false
     })
+    useEffect(() => {
+        const onMessage = (msg: MessageEvent) => {
+            if (msg.data === 'update-orders') {
+                mutate('/admin/orders/api');  // Actualiza la data de admin/orders/api cuando se recibe el mensaje
+            }
+        };
 
+        // Escucha los mensajes en el canal
+        orderChannel.addEventListener('message', onMessage);
+
+        // Cleanup: remueve el event listener cuando el componente se desmonte
+        return () => {
+            orderChannel.removeEventListener('message', onMessage);
+            orderChannel.close();
+        };
+    }, []);  // Solo se ejecuta una vez cuando el componente se monta
+    
     if (isLoading) return <p>Cargando...</p>
     if (error) return <p>Hubo un error</p>
     if (data) return (
         <>
-            <Heading>Administrador ordenes</Heading>
+            <Heading>Órdenes pendientes</Heading>
 
             {data.length ? (
                 <div className="flex flex-wrap gap-10 items-center">

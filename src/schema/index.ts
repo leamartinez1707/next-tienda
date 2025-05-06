@@ -5,7 +5,7 @@ export const OrderSchema = z.object({
     name: z.string().min(3, "Tu nombre es obligatorio"),
     total: z.number().min(1, "No hay productos en tu pedido"),
     order: z.array(z.object({
-        id: z.number(),
+        id: z.string(),
         name: z.string(),
         price: z.number(),
         quantity: z.number(),
@@ -15,7 +15,7 @@ export const OrderSchema = z.object({
 
 
 export const OrderIdSchema = z.object({
-    orderId: z.string().transform((value) => parseInt(value)).refine(value => value > 0, { message: "Hay errores en el ID de la orden" })
+    orderId: z.string().trim().min(1, { message: 'El id de la orden es obligatorio' })
 })
 
 export const SearchSchema = z.object({

@@ -2,12 +2,28 @@ import { completeOrder } from '@/actions/complete-order-action'
 import { OrderWithProducts } from '@/src/types'
 import { formatCurrency } from '@/src/utils'
 import OrderCardButton from './OrderCardButton'
+import { mutate } from 'swr'
+import { orderChannel } from '@/src/utils/orderChannel'
 
 
 interface OrderCardProps {
     order: OrderWithProducts
 }
+
 const OrderCard = ({ order }: OrderCardProps) => {
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
+
+        const formData = new FormData(event.currentTarget);
+        const response = await completeOrder(formData); // Llamar a la acción del servidor
+        if (response?.success) {
+            mutate('/admin/orders/api')
+            orderChannel.postMessage('update-orders') // Notifica a las demás
+        }
+    };
+
+
     return (
         <section
             aria-labelledby="summary-heading"
@@ -32,7 +48,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
             </dl>
 
             <form
-                action={completeOrder}
+                onSubmit={handleSubmit}
             >
                 <input
                     type="text"

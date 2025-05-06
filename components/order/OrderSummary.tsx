@@ -7,6 +7,8 @@ import { formatCurrency } from "@/src/utils"
 import { handleCreateOrder } from "@/actions/create-order-action"
 import { OrderSchema } from "@/src/schema"
 import { toast } from "react-toastify"
+import { mutate } from "swr"
+import { orderChannel } from "@/src/utils/orderChannel"
 
 const OrderSummary = () => {
 
@@ -16,7 +18,7 @@ const OrderSummary = () => {
 
 
     const createOrder = async (formData: FormData) => {
- 
+
         const data = {
             name: formData.get('name'),
             total,
@@ -36,8 +38,10 @@ const OrderSummary = () => {
                 toast.error(issue.message)
             })
         }
-
         toast.success('Pedido realizado con éxito')
+        mutate('/admin/orders/api')
+        orderChannel.postMessage('update-orders') // Notifica a las demás
+
         cleanOrder()
     }
 
