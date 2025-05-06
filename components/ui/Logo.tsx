@@ -3,8 +3,8 @@ import React from 'react'
 
 const Logo = () => {
     return (
-        <div className='flex justify-center mt-5'>
-            <div className="relative size-40">
+        <div className='flex justify-center'>
+            <div className="relative size-80">
                 <Image
                     fill
                     priority

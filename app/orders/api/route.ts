@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic'
 
 export const GET = async () => {
   const orders = await prisma.order.findMany({
-    take: 5,
+    take: 10,
     where: {
       orderReadyAt: {
         not: null

@@ -33,19 +33,24 @@ const OrdersPage = () => {
     if (isLoading) return <p>Cargando...</p>
     if (error) return <p>Hubo un error</p>
     if (data) return (
-        <div className='container mx-auto px-4 min-h-screen'>
-            <Logo />
-            <h1 className='text-center mt-10 text-6xl font-semibold'>Ordenes para retirar</h1>
-            {data.length ? (
-                <div className='grid grid-cols-2 mt-10 max-w-5xl mx-auto gap-5'>
-                    {data
-                        .filter(order => order.status === true)
-                        .map(order => (
-                            <LatestOrderItem key={order.id} order={order} />
-                        ))}
-                </div>
-            ) : <p className='text-center my-10'>No hay ordenes listas</p>
-            }
+        <div className='flex justify-center items-center mx-auto px-4 min-h-screen pb-10'>
+            <div>
+                <Logo />
+            </div>
+            <div>
+                <h1 className='text-center text-6xl font-semibold'>Ordenes para retirar</h1>
+                {data.length ? (
+                    <div className='grid grid-cols-2 mt-10 max-w-5xl mx-auto gap-5'>
+                        {data
+                            .filter(order => order.status === true)
+                            .map((order, index) => (
+                                <LatestOrderItem key={order.id} order={order} index={index} />
+                            ))}
+                    </div>
+                ) : <p className='text-center my-10'>No hay ordenes listas</p>
+                }
+            </div>
+
         </div >
     )
 }
