@@ -33,14 +33,14 @@ const OrdersPage = () => {
     if (isLoading) return <p>Cargando...</p>
     if (error) return <p>Hubo un error</p>
     if (data) return (
-        <div className='flex justify-center items-center mx-auto px-4 min-h-screen pb-10'>
+        <div className='lg:flex justify-center items-center mx-auto px-4 min-h-screen pb-10'>
             <div>
                 <Logo />
             </div>
             <div>
                 <h1 className='text-center text-6xl font-semibold'>Ordenes para retirar</h1>
                 {data.length ? (
-                    <div className='grid grid-cols-2 mt-10 max-w-5xl mx-auto gap-5'>
+                    <div className='grid sm:grid-cols-2 lg:grid-cols-3 mt-10 max-w-5xl mx-auto gap-5'>
                         {data
                             .filter(order => order.status === true)
                             .map((order, index) => (

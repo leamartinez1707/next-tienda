@@ -8,8 +8,9 @@ interface LatestOrderItemProps {
 const LatestOrderItem = ({ order, index }: LatestOrderItemProps) => {
     return (
         <div className='bg-white shadow-md p-5 rounded-md'>
-            <div className='relative top-0 right-0 bg-slate-200 text-slate-700 font-semibold text-lg px-2 py-1 rounded-bl-md'>
-                {index + 1 < 10 ? `0${index + 1}` : index + 1}
+            <div className='flex justify-end'>
+                <span className='bg-red-500 text-white font-semibold text-lg px-2 py-1 rounded-full'>{index + 1 < 10 ? `0${index + 1}` : index + 1}</span>
+
             </div>
             <p className='text-2xl font-semibold text-slate-700'>
                 Cliente: {order.name}
