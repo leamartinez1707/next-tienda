@@ -38,13 +38,22 @@ Este proyecto fue desarrollado utilizando las siguientes tecnologías y herramie
 ## 📸 Capturas de Pantalla
 
 ### Vista del Panel de Administración
-*(Inserta aquí una captura de pantalla del panel de administración)*
+
+<div align="center">
+  <img src="public/assets/nextquiosco_2.png" alt="Captura de pantalla de la web" style="max-width: 100%; width: 600px;">
+</div>
 
 ### Vista del Panel de Usuario
-*(Inserta aquí una captura de pantalla del panel de usuario)*
+
+<div align="center">
+  <img src="public/assets/nextquiosco_3.png" alt="Captura de pantalla de la web" style="max-width: 100%; width: 600px;">
+</div>
 
 ### Vista Responsiva
-*(Inserta aquí una captura de pantalla mostrando la página en dispositivos móviles)*
+
+<div align="center">
+  <img src="public/assets/nextquiosco_1.png" alt="Captura de pantalla de la web" style="max-width: 100%; width: 600px;">
+</div>
 
 ## 🌐 Demo en Vivo
 
@@ -81,10 +90,8 @@ Sigue estos pasos para ejecutar el proyecto localmente:
     ├── components/       # Componentes reutilizables
     ├── prisma/           # Configuración y esquemas de Prisma
     ├── public/           # Archivos estáticos
-    ├── src/              # Código fuente principal
-    ├── styles/           # Estilos globales
-    ├── utils/            # Utilidades y helpers
-    └── pages/            # Páginas de Next.js
+    ├── app/              # Código fuente principal y Paginas
+    ├── src/              # Utilidades y Store
     
 ## Contacto
 
