@@ -1,6 +1,6 @@
-# Next Quiosco App
+# Next Tienda App
 
-Next Quiosco App es una plataforma moderna para la gestión de pedidos en un quiosco o cafetería. Este proyecto incluye dos paneles: uno para los administradores y otro para los usuarios, ofreciendo una experiencia fluida y optimizada para ambos roles.
+Next Tienda App es una plataforma moderna para la gestión de pedidos en un quiosco o cafetería. Este proyecto incluye dos paneles: uno para los administradores y otro para los usuarios, ofreciendo una experiencia fluida y optimizada para ambos roles.
 
 ## 🚀 Tecnologías Utilizadas
 
@@ -52,6 +52,7 @@ Puedes probar la aplicación en los siguientes enlaces:
 
 - **Panel de Administración**: [https://next-tienda-one.vercel.app/admin/products](https://next-tienda-one.vercel.app/admin/products)
 - **Panel de Usuario**: [https://next-tienda-one.vercel.app/order/cafe](https://next-tienda-one.vercel.app/order/cafe)
+- **Vista de retiro de ordenes**: [https://next-tienda-one.vercel.app/order/cafe](https://next-tienda-one.vercel.app/orders)
 
 ## 🛠️ Instalación y Uso
 
@@ -59,8 +60,8 @@ Sigue estos pasos para ejecutar el proyecto localmente:
 
 1. Clona este repositorio:
    ```
-   git clone https://github.com/tu-usuario/next-quiosco-app.git
-   cd next-quiosco-app
+   git clone https://github.com/leamartinez1707/next-tienda.git
+   cd next-tienda
    ```
 2. Instala las dependencias
    ```
