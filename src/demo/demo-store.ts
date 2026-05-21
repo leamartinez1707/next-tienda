@@ -34,6 +34,13 @@ type DemoOrder = {
   orderProducts: DemoOrderProduct[]
 }
 
+type DemoState = {
+  categories: typeof seedCategories
+  products: DemoProduct[]
+  pendingOrders: DemoOrder[]
+  readyOrders: DemoOrder[]
+}
+
 const categoryById = new Map(seedCategories.map((category) => [category.id, category]))
 
 const initialDemoProducts: DemoProduct[] = seedProducts.map((product, index) => ({
@@ -104,12 +111,19 @@ const initialReadyOrders: DemoOrder[] = [
   },
 ]
 
-const state = {
+const createInitialState = (): DemoState => ({
   categories: seedCategories,
   products: [...initialDemoProducts],
   pendingOrders: [...initialPendingOrders],
   readyOrders: [...initialReadyOrders],
+})
+
+declare global {
+  var __FASTFOOD_DEMO_STATE__: DemoState | undefined
 }
+
+const state = globalThis.__FASTFOOD_DEMO_STATE__ ?? createInitialState()
+globalThis.__FASTFOOD_DEMO_STATE__ = state
 
 const createId = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`
 

@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/src/lib/prisma";
 import { OrderIdSchema } from "@/src/schema";
 import { completeDemoOrder } from "@/src/demo/demo-store";
+import { withTimeout } from "@/src/lib/with-timeout";
 
 // Si es una accion hay que definirle que es server
 
@@ -17,7 +18,7 @@ export const completeOrder = async (formData: FormData) => {
     }
 
     try {
-        await prisma.order.update({
+        await withTimeout(prisma.order.update({
             where: {
                 id: result.data.orderId.toString()
             },
@@ -25,7 +26,7 @@ export const completeOrder = async (formData: FormData) => {
                 status: true,
                 orderReadyAt: new Date(Date.now())
             }
-        })
+        }))
         revalidatePath('/admin/orders')
         return { success: true }
     } catch {

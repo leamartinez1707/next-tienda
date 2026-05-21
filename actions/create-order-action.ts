@@ -3,6 +3,7 @@
 import { prisma } from "@/src/lib/prisma"
 import { OrderSchema } from "@/src/schema"
 import { createDemoOrder } from "@/src/demo/demo-store"
+import { withTimeout } from "@/src/lib/with-timeout"
 
 export const handleCreateOrder = async (data: unknown) => {
 
@@ -14,7 +15,7 @@ export const handleCreateOrder = async (data: unknown) => {
     }
 
     try {
-        await prisma.order.create({
+        await withTimeout(prisma.order.create({
             data: {
                 name: result.data.name,
                 total: result.data.total,
@@ -27,7 +28,7 @@ export const handleCreateOrder = async (data: unknown) => {
                     }))
                 }
             }
-        })
+        }))
         return { success: true }
     } catch {
         createDemoOrder(result.data)

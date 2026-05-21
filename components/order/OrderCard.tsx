@@ -5,6 +5,7 @@ import OrderCardButton from './OrderCardButton'
 import { mutate } from 'swr'
 import { notifyOrderUpdate } from '@/src/hooks/useOrderChannelSync'
 import { toast } from 'react-toastify'
+import { useState } from 'react'
 
 
 interface OrderCardProps {
@@ -12,20 +13,45 @@ interface OrderCardProps {
 }
 
 const OrderCard = ({ order }: OrderCardProps) => {
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
+        event.preventDefault()
 
-        const formData = new FormData(event.currentTarget);
-        const response = await completeOrder(formData); // Llamar a la acción del servidor
-        if (response?.success) {
-            mutate('/admin/orders/api')
-            notifyOrderUpdate()
+        if (isSubmitting) return
+        setIsSubmitting(true)
+
+        try {
+            await mutate<OrderWithProducts[]>(
+                '/admin/orders/api',
+                async (currentOrders = []) => {
+                    const formData = new FormData()
+                    formData.append('order_id', order.id)
+
+                    const response = await completeOrder(formData)
+                    if (!response?.success) {
+                        throw new Error('No se pudo completar la orden')
+                    }
+
+                    notifyOrderUpdate()
+                    return currentOrders.filter((currentOrder) => currentOrder.id !== order.id)
+                },
+                {
+                    optimisticData: (currentOrders = []) => currentOrders.filter((currentOrder) => currentOrder.id !== order.id),
+                    rollbackOnError: true,
+                    revalidate: false,
+                    populateCache: true,
+                },
+            )
+
             toast.success('Orden completada')
-            return
+            mutate('/orders/api')
+        } catch {
+            toast.error('No se pudo completar la orden')
+        } finally {
+            setIsSubmitting(false)
         }
-        toast.error('No se pudo completar la orden')
-    };
+    }
 
 
     return (
@@ -69,7 +95,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
                     defaultValue={order.id}
                     className='hidden'
                     name='order_id' />
-                <OrderCardButton />
+                <OrderCardButton pending={isSubmitting} />
             </form>
         </section>
     )
