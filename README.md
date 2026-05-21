@@ -1,129 +1,141 @@
-# Next Quiosco App
+# FastFood App
 
-Next Quiosco App es un proyecto de portfolio full stack construido con Next.js para demostrar producto, criterio técnico y una experiencia de review clara. Incluye flujo público de compra, panel administrativo y un modo demo tolerante a fallos para que se pueda evaluar incluso si la base de datos externa no está disponible.
+Proyecto full stack de portfolio construido con Next.js.
 
-## Quick Path
+La app simula la operacion de un local de comida rapida con dos caras:
+1. Cliente: navegar categorias, armar carrito y crear pedido.
+2. Admin: gestionar productos y completar ordenes pendientes.
 
-1. Ejecuta la app localmente con `npm install`, `npx prisma generate` y `npm run dev`.
-2. Abre `/` para leer la landing y entrar a las rutas principales de review.
-3. Recorre `/order/cafe`, `/admin/products` y `/admin/orders` para validar la experiencia completa.
+Tambien tiene modo demo (fallback) para mantener navegabilidad cuando la base externa no responde.
 
-## 🚀 Tecnologías Utilizadas
+## Demo
 
-Este proyecto fue desarrollado utilizando las siguientes tecnologías y herramientas:
+- Web: https://fastfooduy.vercel.app
+- Flujo cliente: https://fastfooduy.vercel.app/order/cafe
+- Admin productos: https://fastfooduy.vercel.app/admin/products
+- Admin ordenes: https://fastfooduy.vercel.app/admin/orders
 
-- **Next.js**: Framework de React para aplicaciones web modernas.
-- **React**: Biblioteca para construir interfaces de usuario.
-- **TypeScript**: Tipado estático para un desarrollo más robusto.
-- **Prisma**: ORM para la gestión de la base de datos.
-- **MongoDB**: Base de datos para guardar la información.
-- **TailwindCSS**: Framework de CSS para un diseño rápido y responsivo.
-- **SWR**: Manejo de datos en tiempo real con revalidación automática.
-- **Zod**: Validación de esquemas de datos.
-- **React Toastify**: Notificaciones elegantes y personalizables.
-- **Zustand**: Manejo de estado simple y escalable.
-- **Cloudinary**: Gestión de imágenes en la nube.
+## Stack
 
-## 🌟 Qué demuestra este proyecto
+- Next.js 15 + React 19 + TypeScript
+- Prisma + MongoDB
+- Tailwind CSS
+- Zustand + SWR
+- Zod
+- Cloudinary (imagenes)
 
-| Área | Decisión |
-|-------|----------|
-| Experiencia de producto | Flujo público de compra con categorías, carrito lateral y confirmación de pedido. |
-| Backoffice | Panel admin para productos, búsquedas, edición y seguimiento operativo de órdenes. |
-| Calidad técnica | Server Actions, Zod, Prisma, SWR y Zustand para separar responsabilidades y mantener feedback consistente. |
-| Portfolio review | Landing inicial con guía de uso y demo fallback para entrevistas o revisiones asincrónicas. |
-| Resiliencia | Si Mongo falla, varias vistas siguen navegables usando datos demo en memoria. |
+## Funcionalidades
 
-## 📸 Capturas de Pantalla
+- Catalogo por categorias y carrito lateral.
+- Creacion de orden desde cliente.
+- Vista de ordenes listas para retiro.
+- Panel admin para productos (crear, editar, buscar).
+- Panel admin para completar ordenes.
+- Validacion de payloads con Zod.
+- Sync entre vistas con SWR + eventos.
+- Fallback demo configurable por entorno.
 
-### Vista del Panel de Administración
+## Arquitectura (resumen)
 
-<div align="center">
-  <img src="public/assets/nextquiosco_2.png" alt="Captura de pantalla de la web" style="max-width: 100%; width: 600px;">
-</div>
+- UI y rutas: App Router (`app/`)
+- Mutaciones de ordenes:
+1. `POST /order/api`
+2. `POST /admin/orders/api/complete`
+- Lectura de ordenes:
+1. `GET /admin/orders/api`
+2. `GET /orders/api`
+- Prisma client compartido en `src/lib/prisma.ts`
 
-### Vista del Panel de Usuario
+## Instalacion local
 
-<div align="center">
-  <img src="public/assets/nextquiosco_3.png" alt="Captura de pantalla de la web" style="max-width: 100%; width: 600px;">
-</div>
+1. Clonar repo
 
-### Vista Responsiva
+```bash
+git clone https://github.com/leamartinez1707/next-tienda.git
+cd next-tienda
+```
 
-<div align="center">
-  <img src="public/assets/nextquiosco_1.png" alt="Captura de pantalla de la web" style="max-width: 100%; width: 600px;">
-</div>
+2. Instalar dependencias
 
-## 🌐 Demo en Vivo
+```bash
+npm install
+```
 
-Puedes probar la aplicación en los siguientes enlaces:
+3. Crear `.env` (puedes copiar `.env.template`)
 
-- **Panel de Administración**: [https://next-tienda-one.vercel.app/admin/products](https://next-tienda-one.vercel.app/admin/products)
-- **Panel de Usuario**: [https://next-tienda-one.vercel.app/order/cafe](https://next-tienda-one.vercel.app/order/cafe)
-- **Vista de retiro de ordenes**: [https://next-tienda-one.vercel.app/orders](https://next-tienda-one.vercel.app/orders)
+```bash
+DATABASE_URL=
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+NEXT_PUBLIC_CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 
-## 🛠️ Instalación y Uso
+# Opcional (default: 8000)
+DB_QUERY_TIMEOUT_MS=8000
 
-Sigue estos pasos para ejecutar el proyecto localmente:
+# Opcional: en produccion queda false por defecto
+DEMO_FALLBACK_ENABLED=false
 
-1. Clona este repositorio:
-   ```
-   git clone https://github.com/leamartinez1707/next-tienda.git
-   cd next-tienda
-   ```
-2. Instala las dependencias
-   ```
-    npm install
-   ```
-3. Configura las variables de entorno: crea un archivo `.env` en la raíz del proyecto y agrega las variables necesarias para la conexión a la base de datos y Cloudinary.
-   
-  Variables recomendadas:
-  ```
-  DATABASE_URL=...
-  CLOUDINARY_CLOUD_NAME=...
-  CLOUDINARY_API_KEY=...
-  CLOUDINARY_API_SECRET=...
+# Opcional: proteccion de rutas /admin
+ADMIN_BASIC_USER=admin
+ADMIN_BASIC_PASSWORD=tu_password_segura
+```
 
-  # Opcional: timeout para consultas Prisma (ms). Default: 8000
-  DB_QUERY_TIMEOUT_MS=8000
+4. Generar Prisma Client
 
-  # Opcional: fallback a datos demo cuando la BD falla.
-  # En produccion ahora es false por defecto.
-  DEMO_FALLBACK_ENABLED=false
+```bash
+npx prisma generate
+```
 
-  # Seguridad panel admin (opcional, recomendado)
-  ADMIN_BASIC_USER=admin
-  ADMIN_BASIC_PASSWORD=tu_password_segura
-  ```
-4. Genera el cliente de Prisma:
-    ```
-    npx prisma generate
-    ```
-5. Ejecuta el servidor de desarrollo:
-    ```
-    npm run dev
-    ```
-6. Abre la aplicación en tu navegador en http://localhost:3000.
+5. Levantar proyecto
 
-## Detalles de review
+```bash
+npm run dev
+```
 
-- La home (`/`) explica el alcance del proyecto y propone un orden corto para revisarlo.
-- Las rutas principales para portfolio son `/order/cafe`, `/admin/products` y `/admin/orders`.
-- Si la conexión real con MongoDB falla, el proyecto mantiene una demo navegable en varias vistas para no romper la evaluación funcional.
+6. Abrir
 
-### Estructura del Proyecto
-    
-    next-quiosco-app/
-    ├── actions/          # Acciones del servidor
-    ├── components/       # Componentes reutilizables
-    ├── prisma/           # Configuración y esquemas de Prisma
-    ├── public/           # Archivos estáticos
-    ├── app/              # Código fuente principal y Paginas
-    ├── src/              # Utilidades y Store
-    
+```text
+http://localhost:3000
+```
+
+## Scripts
+
+- `npm run dev`: desarrollo
+- `npm run build`: build produccion
+- `npm run start`: correr build
+- `npm run lint`: lint Next.js
+
+## Variables de entorno importantes
+
+- `DATABASE_URL`: conexion MongoDB (obligatoria)
+- `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`: cloud name para widget
+- `NEXT_PUBLIC_CLOUDINARY_API_KEY`: api key publica para upload widget
+- `CLOUDINARY_API_SECRET`: secreto de Cloudinary
+- `DB_QUERY_TIMEOUT_MS`: timeout de queries Prisma con fallback de 8000ms
+- `DEMO_FALLBACK_ENABLED`: habilita fallback demo (`true/false`)
+- `ADMIN_BASIC_USER` y `ADMIN_BASIC_PASSWORD`: basic auth para `/admin`
+
+## Nota de produccion (Vercel)
+
+Si en produccion ves errores 500 al crear/listar ordenes, revisa primero variables:
+1. `DATABASE_URL` cargada en entorno `Production`.
+2. Re-deploy despues de editar variables.
+3. Verificar conectividad de MongoDB (red/IP/usuario).
+
+## Estructura base
+
+```text
+next-tienda/
+├── app/
+├── actions/
+├── components/
+├── prisma/
+├── public/
+└── src/
+```
+
 ## Contacto
 
-### Si tienes alguna consulta o sugerencia, no dudes en contactarme:
-
-#### Email: leandromartinez.dev@gmail.com
-#### Portafolio: https://leandromartinez.dev/
+- Email: leandromartinez.dev@gmail.com
+- Portfolio: https://leandromartinez.dev/
+- GitHub: https://github.com/leamartinez1707

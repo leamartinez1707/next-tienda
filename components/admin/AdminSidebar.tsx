@@ -4,7 +4,7 @@ import AdminRoute from "./AdminRoute"
 const adminNavigation = [
     { url: '/admin/orders', text: 'Ordenes pendientes', blank: false },
     { url: '/admin/products', text: 'Productos', blank: false },
-    { url: '/order/cafe', text: 'Ver Quiosco', blank: true },
+    { url: '/order/cafe', text: 'Ver catalogo', blank: true },
     { url: '/orders', text: 'Ordenes completadas', blank: true },
 ]
 

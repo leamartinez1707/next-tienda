@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "FastFood | Restaurante Digital",
     description:
-      "Quiosco digital con panel admin, server actions, validación tipada y modo demo tolerante a fallos para reviews técnicas.",
+      "Restaurante digital con panel admin, server actions, validación tipada y modo demo tolerante a fallos para reviews técnicas.",
     type: "website",
     locale: "es_AR",
   },

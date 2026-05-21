@@ -55,7 +55,7 @@ const ProductsPage = async ({ searchParams }: { searchParams: Promise<{ page: st
                         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">Administracion</p>
                         <Heading>Gestionar productos</Heading>
                         <p className="-mt-2 max-w-2xl text-sm text-slate-600 sm:text-base">
-                            Crea, edita y organiza el menu disponible para el quiosco en tiempo real.
+                            Crea, edita y organiza el catalogo disponible para el restaurante en tiempo real.
                         </p>
                     </div>
 
