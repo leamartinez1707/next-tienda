@@ -4,6 +4,7 @@ import { prisma } from "@/src/lib/prisma"
 import { OrderSchema } from "@/src/schema"
 import { createDemoOrder } from "@/src/demo/demo-store"
 import { withTimeout } from "@/src/lib/with-timeout"
+import { isDemoFallbackEnabled } from "@/src/lib/demo-fallback"
 
 export const handleCreateOrder = async (data: unknown) => {
 
@@ -30,9 +31,17 @@ export const handleCreateOrder = async (data: unknown) => {
             }
         }))
         return { success: true }
-    } catch {
-        createDemoOrder(result.data)
-        return { success: true, demo: true }
+    } catch (error) {
+        if (isDemoFallbackEnabled) {
+            createDemoOrder(result.data)
+            return { success: true, demo: true }
+        }
+
+        console.error('Error creating order', error)
+        return {
+            success: false,
+            errors: [{ message: 'No se pudo crear el pedido. Intenta de nuevo.' }]
+        }
     }
 
 }

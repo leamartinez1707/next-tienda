@@ -1,6 +1,7 @@
 import { prisma } from "@/src/lib/prisma"
 import { getDemoPendingOrders } from "@/src/demo/demo-store"
 import { withTimeout } from "@/src/lib/with-timeout"
+import { isDemoFallbackEnabled } from "@/src/lib/demo-fallback"
 
 export const dynamic = 'force-dynamic'
 export const GET = async () => {
@@ -18,7 +19,12 @@ export const GET = async () => {
       }
     }))
     return Response.json(orders)
-  } catch {
-    return Response.json(getDemoPendingOrders())
+  } catch (error) {
+    if (isDemoFallbackEnabled) {
+      return Response.json(getDemoPendingOrders())
+    }
+
+    console.error('Error loading pending orders', error)
+    return Response.json({ message: 'No se pudieron cargar las ordenes pendientes' }, { status: 500 })
   }
 }

@@ -84,6 +84,13 @@ Sigue estos pasos para ejecutar el proyecto localmente:
   CLOUDINARY_API_KEY=...
   CLOUDINARY_API_SECRET=...
 
+  # Opcional: timeout para consultas Prisma (ms). Default: 8000
+  DB_QUERY_TIMEOUT_MS=8000
+
+  # Opcional: fallback a datos demo cuando la BD falla.
+  # En produccion ahora es false por defecto.
+  DEMO_FALLBACK_ENABLED=false
+
   # Seguridad panel admin (opcional, recomendado)
   ADMIN_BASIC_USER=admin
   ADMIN_BASIC_PASSWORD=tu_password_segura

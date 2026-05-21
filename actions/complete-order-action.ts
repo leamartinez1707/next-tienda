@@ -4,6 +4,7 @@ import { prisma } from "@/src/lib/prisma";
 import { OrderIdSchema } from "@/src/schema";
 import { completeDemoOrder } from "@/src/demo/demo-store";
 import { withTimeout } from "@/src/lib/with-timeout";
+import { isDemoFallbackEnabled } from "@/src/lib/demo-fallback";
 
 // Si es una accion hay que definirle que es server
 
@@ -29,13 +30,18 @@ export const completeOrder = async (formData: FormData) => {
         }))
         revalidatePath('/admin/orders')
         return { success: true }
-    } catch {
-        const updated = completeDemoOrder(result.data.orderId.toString())
-        if (!updated) {
-            return { success: false, errors: [{ message: 'No se pudo completar la orden' }] }
+    } catch (error) {
+        if (isDemoFallbackEnabled) {
+            const updated = completeDemoOrder(result.data.orderId.toString())
+            if (!updated) {
+                return { success: false, errors: [{ message: 'No se pudo completar la orden' }] }
+            }
+
+            revalidatePath('/admin/orders')
+            return { success: true, demo: true }
         }
 
-        revalidatePath('/admin/orders')
-        return { success: true, demo: true }
+        console.error('Error completing order', error)
+        return { success: false, errors: [{ message: 'No se pudo completar la orden' }] }
     }
 }

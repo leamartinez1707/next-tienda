@@ -11,7 +11,19 @@ import { useOrderChannelSync } from '@/src/hooks/useOrderChannelSync'
 const OrdersPage = () => {
 
     const url = '/orders/api'
-    const fetcher = () => fetch(url).then(res => res.json()).then(data => data)
+    const fetcher = async () => {
+        const response = await fetch(url)
+        if (!response.ok) {
+            throw new Error('No se pudieron cargar las ordenes listas')
+        }
+
+        const data = await response.json()
+        if (!Array.isArray(data)) {
+            throw new Error('Respuesta invalida de ordenes listas')
+        }
+
+        return data
+    }
     const { data, error, isLoading } = useSWR<OrderWithProducts[]>(url, fetcher, {
         revalidateOnFocus: false
     })
