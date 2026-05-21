@@ -42,7 +42,14 @@ const OrderSummary = () => {
             response.errors.forEach((issue) => {
                 toast.error(issue.message)
             })
+            return
         }
+
+        if (!response?.success) {
+            toast.error('No se pudo crear el pedido')
+            return
+        }
+
         toast.success('Pedido realizado con éxito')
         mutate('/admin/orders/api')
         notifyOrderUpdate()
