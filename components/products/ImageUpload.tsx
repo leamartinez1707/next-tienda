@@ -30,7 +30,10 @@ const ImageUpload = ({ image }: ImageUploadProps) => {
                 <>
                     <div className="space-y-2">
                         <label className="text-slate-800">Imágen del producto</label>
-                        <div className="relative cursor-pointer hover:opacity-70 transition border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-600 bg-slate-100 min-h-56"
+                        <button
+                            type="button"
+                            aria-label="Subir imagen del producto"
+                            className="relative w-full cursor-pointer hover:opacity-80 transition border border-neutral-300 rounded-md flex flex-col justify-center items-center gap-4 text-neutral-600 bg-slate-100 min-h-56"
                             onClick={() => open()}>
                             <TbPhotoPlus
                                 size={50}
@@ -48,7 +51,7 @@ const ImageUpload = ({ image }: ImageUploadProps) => {
                                     />
                                 </div>
                             )}
-                        </div>
+                        </button>
                     </div>
 
                     {image && !imageUrl && (

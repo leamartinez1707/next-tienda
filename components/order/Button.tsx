@@ -15,7 +15,7 @@ const AddToOrderButton = ({ product }: ButtonProps) => {
     return (
         <button
             onClick={() => addToCart(product)}
-            className="text-sm font-medium bg-gray-900 hover:bg-gray-900/80 rounded p-2 text-gray-50 leading-non" >Agregar al carrito
+            className="w-full rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-slate-800 hover:shadow-md active:scale-[0.99]" >Agregar al carrito
         </button>
     )
 }

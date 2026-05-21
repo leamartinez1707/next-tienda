@@ -7,32 +7,35 @@ interface LatestOrderItemProps {
 }
 const LatestOrderItem = ({ order, index }: LatestOrderItemProps) => {
     return (
-        <div className='bg-white shadow-md p-5 rounded-md'>
-            <div className='flex justify-end'>
-                <span className='bg-red-500 text-white font-semibold text-lg px-2 py-1 rounded-full'>{index + 1 < 10 ? `0${index + 1}` : index + 1}</span>
-
+        <article className='rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-5'>
+            <div className='flex items-start justify-between gap-3'>
+                <p className='line-clamp-1 pr-2 text-lg font-bold text-slate-900 sm:text-xl'>
+                    {order.name}
+                </p>
+                <span className='rounded-full bg-rose-500 px-2.5 py-1 text-xs font-bold text-white shadow-sm sm:px-3 sm:text-sm'>
+                    #{index + 1 < 10 ? `0${index + 1}` : index + 1}
+                </span>
             </div>
-            <p className='text-2xl font-semibold text-slate-700'>
-                Cliente: {order.name}
 
-            </p>
+            <p className='mt-2 text-sm text-slate-500'>Pedido listo para entregar</p>
+
             <ul
-                className='divide-y divide-slate-200 border-t border-gray-200 text-gray-500 text-sm font-medium'
+                className='mt-4 divide-y divide-slate-200 border-t border-gray-200 text-sm font-medium text-slate-600'
                 role='list'
             >
                 {order.orderProducts.map(product => (
                     <li
                         key={product.id}
-                        className='flex text-lg py-4'
+                        className='flex items-center justify-between gap-3 py-4'
                     >
-                        <span className='font-semibold'>
-                            ({product.quantity}) {''}
+                        <p className='line-clamp-2 text-sm font-medium text-slate-700 sm:text-base'>{product.product.name}</p>
+                        <span className='shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700'>
+                            x{product.quantity}
                         </span>
-                        <p>{product.product.name}</p>
                     </li>
                 ))}
             </ul>
-        </div>
+        </article>
     )
 }
 

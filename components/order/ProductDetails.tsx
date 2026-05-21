@@ -21,45 +21,51 @@ const ProductDetails = ({ item }: ProductDetailsProps) => {
     const disableIncreaseButton = useMemo(() => item.quantity === MAX_ITEMS, [item.quantity])
 
     return (
-        <li className="shadow space-y-1 p-4 bg-white  border-t border-gray-200 ">
-            <div className="space-y-4">
-                <div className="flex justify-between items-start">
-                    <p className="text-xl font-bold">{item.name} </p>
+        <li className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+            <div className="space-y-3">
+                <div className="flex items-start justify-between gap-2">
+                    <p className="line-clamp-2 text-base font-bold text-slate-900">{item.name}</p>
 
                     <button
                         type="button"
+                        aria-label={`Quitar ${item.name} del pedido`}
                         onClick={() => removeItem(item.id)}
                     >
-                        <XCircleIcon className="text-red-600 h-8 w-8" />
+                        <XCircleIcon className="h-6 w-6 text-red-600 transition hover:text-red-700" />
                     </button>
                 </div>
-                <p className="text-2xl text-amber-500 font-black">
+
+                <p className="text-xl font-black text-amber-600">
                     {formatCurrency(item.price)}
                 </p>
-                <div className="flex gap-5 px-10 py-2 bg-gray-100 w-fit rounded-lg">
+
+                <div className="flex w-fit items-center gap-4 rounded-xl bg-slate-100 px-4 py-1.5">
                     <button
                         type="button"
                         disabled={disableDecreaseButton}
+                        aria-label={`Reducir cantidad de ${item.name}`}
                         onClick={() => decreaseQuantity(item.id)}
                     >
-                        <MinusIcon className={`size-6 ${disableDecreaseButton ? 'opacity-30' : null}`} />
+                        <MinusIcon className={`size-5 ${disableDecreaseButton ? 'opacity-30' : 'transition-transform active:scale-90'}`} />
                     </button>
 
-                    <p className="text-lg font-black ">
+                    <p className="min-w-5 text-center text-base font-black">
                         {item.quantity}
                     </p>
 
                     <button
                         type="button"
                         disabled={disableIncreaseButton}
+                        aria-label={`Aumentar cantidad de ${item.name}`}
                         onClick={() => increaseQuantity(item.id)}
                     >
-                        <PlusIcon className={`size-6 ${disableIncreaseButton ? 'opacity-30' : null}`} />
+                        <PlusIcon className={`size-5 ${disableIncreaseButton ? 'opacity-30' : 'transition-transform active:scale-90'}`} />
                     </button>
                 </div>
-                <p className="text-xl font-black text-gray-700">
-                    Subtotal: {''}
-                    <span className="font-normal">
+
+                <p className="text-sm font-semibold text-slate-700">
+                    Subtotal:{' '}
+                    <span className="font-bold text-slate-900">
                         {formatCurrency(item.subTotal)}
                     </span>
                 </p>

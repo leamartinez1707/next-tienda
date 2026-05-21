@@ -2,20 +2,25 @@ import ProductSearch from '@/components/products/ProductSearch';
 import ProductTable from '@/components/products/ProductTable';
 import Heading from '@/components/ui/Heading'
 import { prisma } from '@/src/lib/prisma'
+import EmptyState from '@/components/ui/EmptyState'
+import { getDemoProductsBySearch } from '@/src/demo/demo-store'
 
 const searchProducts = async (searchTerm: string) => {
-    const products = await prisma.product.findMany({
-        where: {
-            name: {
-                contains: searchTerm,
-                mode: "insensitive"
+    try {
+        return await prisma.product.findMany({
+            where: {
+                name: {
+                    contains: searchTerm,
+                    mode: "insensitive"
+                }
+            },
+            include: {
+                category: true
             }
-        },
-        include: {
-            category: true
-        }
-    })
-    return products;
+        })
+    } catch {
+        return getDemoProductsBySearch(searchTerm)
+    }
 }
 
 const SearchPage = async ({ searchParams }: { searchParams: Promise<{ search: string }> }) => {
@@ -29,7 +34,7 @@ const SearchPage = async ({ searchParams }: { searchParams: Promise<{ search: st
             </div>
             {products.length ? (
                 <ProductTable products={products} />
-            ) : <p className='text-center text-lg font-semibold my-4'>No hay resultados</p>}
+            ) : <EmptyState message="No hay resultados" />}
         </div>
     )
 }

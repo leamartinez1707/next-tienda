@@ -3,7 +3,8 @@ import { OrderWithProducts } from '@/src/types'
 import { formatCurrency } from '@/src/utils'
 import OrderCardButton from './OrderCardButton'
 import { mutate } from 'swr'
-import { orderChannel } from '@/src/utils/orderChannel'
+import { notifyOrderUpdate } from '@/src/hooks/useOrderChannelSync'
+import { toast } from 'react-toastify'
 
 
 interface OrderCardProps {
@@ -19,36 +20,49 @@ const OrderCard = ({ order }: OrderCardProps) => {
         const response = await completeOrder(formData); // Llamar a la acción del servidor
         if (response?.success) {
             mutate('/admin/orders/api')
-            orderChannel.postMessage('update-orders') // Notifica a las demás
+            notifyOrderUpdate()
+            toast.success('Orden completada')
+            return
         }
+        toast.error('No se pudo completar la orden')
     };
 
 
     return (
         <section
             aria-labelledby="summary-heading"
-            className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6  lg:mt-0 lg:p-8 space-y-4"
+            className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-6"
         >
-            <p className='text-2xl font-medium text-gray-900'>Cliente: {order.name} </p>
-            <p className='text-lg font-medium text-gray-900'>Productos Ordenados: </p>
-            <dl className="mt-6 space-y-4">
+            <div className="flex items-start justify-between gap-3">
+                <div>
+                    <p className='text-xs font-semibold uppercase tracking-[0.18em] text-slate-500'>Cliente</p>
+                    <p className='mt-1 text-xl font-bold text-slate-900'>{order.name}</p>
+                </div>
+                <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold uppercase tracking-wide text-amber-800">
+                    Pendiente
+                </span>
+            </div>
+
+            <p className='mt-4 text-sm font-semibold uppercase tracking-[0.14em] text-slate-500'>Productos ordenados</p>
+            <dl className="mt-3 space-y-3">
                 {order.orderProducts.map((product) => (
-                    <div key={product.id} className="flex items-center gap-2 pt-4 border-t border-gray-200">
-                        <dt className='flex items-center text-sm text-gray-600'>
-                            <span className='font-black'>({product.quantity}) {''}</span>
+                    <div key={product.id} className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+                        <dd className='text-sm font-medium text-slate-800'>{product.product.name}</dd>
+                        <dt className='shrink-0 rounded-full bg-slate-200 px-2.5 py-1 text-xs font-bold text-slate-700'>
+                            x{product.quantity}
                         </dt>
-                        <dd className='text-sm font-medium text-gray-900'>{product.product.name}</dd>
                     </div>
 
                 ))}
-                <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                    <dt className="text-base font-medium text-gray-900">Total a Pagar:</dt>
-                    <dd className="text-base font-medium text-gray-900">{formatCurrency(order.total)}</dd>
+                <div className="mt-4 flex items-center justify-between rounded-2xl border border-amber-200 bg-amber-50 px-3 py-3">
+                    <dt className="text-sm font-semibold uppercase tracking-wide text-amber-800">Total</dt>
+                    <dd className="text-lg font-black text-amber-900">{formatCurrency(order.total)}</dd>
                 </div>
             </dl>
 
             <form
                 onSubmit={handleSubmit}
+                aria-label={`Completar orden de ${order.name}`}
             >
                 <input
                     type="text"

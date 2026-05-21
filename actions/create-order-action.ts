@@ -2,6 +2,7 @@
 
 import { prisma } from "@/src/lib/prisma"
 import { OrderSchema } from "@/src/schema"
+import { createDemoOrder } from "@/src/demo/demo-store"
 
 export const handleCreateOrder = async (data: unknown) => {
 
@@ -27,10 +28,10 @@ export const handleCreateOrder = async (data: unknown) => {
                 }
             }
         })
-    } catch (error) {
-
-        console.log(error)
-
+        return { success: true }
+    } catch {
+        createDemoOrder(result.data)
+        return { success: true, demo: true }
     }
 
 }

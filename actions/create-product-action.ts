@@ -2,6 +2,7 @@
 
 import { prisma } from "@/src/lib/prisma"
 import { ProductSchema } from "@/src/schema"
+import { createDemoProduct } from "@/src/demo/demo-store"
 
 export const createProduct = async (data: unknown) => {
     const result = ProductSchema.safeParse(data)
@@ -10,7 +11,13 @@ export const createProduct = async (data: unknown) => {
             errors: result.error.issues
         }
     }
-    await prisma.product.create({
-        data: result.data
-    })
+    try {
+        await prisma.product.create({
+            data: result.data
+        })
+    } catch {
+        createDemoProduct(result.data)
+    }
+
+    return { success: true }
 }

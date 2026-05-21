@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	:focus-visible {
+		@apply outline-none ring-2 ring-amber-400 ring-offset-2;
+	}
+
+	body {
+		@apply text-gray-900 antialiased overflow-x-hidden w-full max-w-full;
+	}
+
+	html {
+		@apply overflow-x-hidden max-w-full;
+	}
+}
+
+@layer components {
+	.surface-card {
+		@apply bg-white rounded-lg shadow-sm border border-gray-100;
+	}
+
+	.interactive-lift {
+		@apply transition-transform duration-200 hover:-translate-y-0.5;
+	}
+}

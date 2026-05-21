@@ -10,11 +10,19 @@ const adminNavigation = [
 export default function AdminSidebar() {
 
     return (
-        <>
-            <Logo />
-            <div className="space-y-3 ">
-                <p className="mt-10 uppercase font-bold text-sm text-gray-600 text-center">Navegación</p>
-                <nav className="flex flex-col">
+        <div className="flex h-full flex-col px-4 py-4 sm:px-5 sm:py-5">
+            <div className="rounded-3xl border border-slate-200 bg-[linear-gradient(145deg,_#ffffff,_#f8fafc)] p-4 shadow-sm">
+                <Logo />
+                <div className="text-center">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Panel de control</p>
+                    <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-900">Admin FastFood</h2>
+                    <p className="mt-2 text-sm text-slate-600">Gestiona productos y pedidos desde un solo lugar.</p>
+                </div>
+            </div>
+
+            <div className="mt-5 flex-1 space-y-3">
+                <p className="text-center text-xs font-bold uppercase tracking-[0.18em] text-gray-500">Navegacion</p>
+                <nav className="flex flex-col" aria-label="Navegación de administración">
                     {adminNavigation.map((item) => (
                         <AdminRoute
                             key={item.url}
@@ -23,7 +31,7 @@ export default function AdminSidebar() {
                     ))}
                 </nav>
             </div>
-        </>
+        </div>
 
     )
 }

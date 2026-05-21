@@ -1,9 +1,14 @@
 import { prisma } from "@/src/lib/prisma"
 import ImageUpload from "./ImageUpload"
 import { Product } from "@prisma/client"
+import { getDemoCategories } from "@/src/demo/demo-store"
 
 const getCategories = async () => {
-    return await prisma.category.findMany()
+    try {
+        return await prisma.category.findMany()
+    } catch {
+        return getDemoCategories()
+    }
 }
 
 
@@ -26,7 +31,9 @@ const ProductForm = async ({ product }: ProductFormProps) => {
                     id="name"
                     type="text"
                     name="name"
-                    className="block w-full p-3 bg-slate-100"
+                    required
+                    minLength={2}
+                    className="block w-full p-3 bg-slate-100 rounded-md border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="Nombre Producto"
                     defaultValue={product?.name}
                 />
@@ -39,8 +46,12 @@ const ProductForm = async ({ product }: ProductFormProps) => {
                 >Precio:</label>
                 <input
                     id="price"
+                    type="number"
+                    step="0.01"
+                    min="0.01"
                     name="price"
-                    className="block w-full p-3 bg-slate-100"
+                    required
+                    className="block w-full p-3 bg-slate-100 rounded-md border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="Precio Producto"
                     defaultValue={product?.price}
                 />
@@ -52,9 +63,10 @@ const ProductForm = async ({ product }: ProductFormProps) => {
                     htmlFor="categoryId"
                 >Categoría:</label>
                 <select
-                    className="block w-full p-3 bg-slate-100"
+                    className="block w-full p-3 bg-slate-100 rounded-md border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400"
                     id="categoryId"
                     name="categoryId"
+                    required
                     defaultValue={product?.categoryId}
                 >
                     <option value="">-- Seleccione --</option>

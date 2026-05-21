@@ -1,6 +1,12 @@
-# Next Tienda App
+# Next Quiosco App
 
-Next Tienda App es una plataforma moderna para la gestión de pedidos en un quiosco o cafetería. Este proyecto incluye dos paneles: uno para los administradores y otro para los usuarios, ofreciendo una experiencia fluida y optimizada para ambos roles.
+Next Quiosco App es un proyecto de portfolio full stack construido con Next.js para demostrar producto, criterio técnico y una experiencia de review clara. Incluye flujo público de compra, panel administrativo y un modo demo tolerante a fallos para que se pueda evaluar incluso si la base de datos externa no está disponible.
+
+## Quick Path
+
+1. Ejecuta la app localmente con `npm install`, `npx prisma generate` y `npm run dev`.
+2. Abre `/` para leer la landing y entrar a las rutas principales de review.
+3. Recorre `/order/cafe`, `/admin/products` y `/admin/orders` para validar la experiencia completa.
 
 ## 🚀 Tecnologías Utilizadas
 
@@ -18,22 +24,15 @@ Este proyecto fue desarrollado utilizando las siguientes tecnologías y herramie
 - **Zustand**: Manejo de estado simple y escalable.
 - **Cloudinary**: Gestión de imágenes en la nube.
 
-## 🌟 Características
+## 🌟 Qué demuestra este proyecto
 
-- **Panel de Administración**:
-  - Gestión de productos y pedidos.
-  - Actualización en tiempo real de los pedidos completados.
-  - Interfaz intuitiva y responsiva.
-
-- **Panel de Usuario**:
-  - Selección de productos y creación de pedidos.
-  - Visualización del estado del pedido en tiempo real.
-  - Diseño optimizado para dispositivos móviles.
-
-- **Otras Funcionalidades**:
-  - Validación de datos con Zod.
-  - Notificaciones en tiempo real con React Toastify.
-  - Integración con Cloudinary para la gestión de imágenes.
+| Área | Decisión |
+|-------|----------|
+| Experiencia de producto | Flujo público de compra con categorías, carrito lateral y confirmación de pedido. |
+| Backoffice | Panel admin para productos, búsquedas, edición y seguimiento operativo de órdenes. |
+| Calidad técnica | Server Actions, Zod, Prisma, SWR y Zustand para separar responsabilidades y mantener feedback consistente. |
+| Portfolio review | Landing inicial con guía de uso y demo fallback para entrevistas o revisiones asincrónicas. |
+| Resiliencia | Si Mongo falla, varias vistas siguen navegables usando datos demo en memoria. |
 
 ## 📸 Capturas de Pantalla
 
@@ -61,7 +60,7 @@ Puedes probar la aplicación en los siguientes enlaces:
 
 - **Panel de Administración**: [https://next-tienda-one.vercel.app/admin/products](https://next-tienda-one.vercel.app/admin/products)
 - **Panel de Usuario**: [https://next-tienda-one.vercel.app/order/cafe](https://next-tienda-one.vercel.app/order/cafe)
-- **Vista de retiro de ordenes**: [https://next-tienda-one.vercel.app/order/cafe](https://next-tienda-one.vercel.app/orders)
+- **Vista de retiro de ordenes**: [https://next-tienda-one.vercel.app/orders](https://next-tienda-one.vercel.app/orders)
 
 ## 🛠️ Instalación y Uso
 
@@ -76,12 +75,34 @@ Sigue estos pasos para ejecutar el proyecto localmente:
    ```
     npm install
    ```
-3. Configura las variables de entorno: Crea un archivo .env en la raíz del proyecto y agrega las variables necesarias para la conexión a la base de datos y Cloudinary.
-4.Ejecuta el servidor de desarrollo:
+3. Configura las variables de entorno: crea un archivo `.env` en la raíz del proyecto y agrega las variables necesarias para la conexión a la base de datos y Cloudinary.
+   
+  Variables recomendadas:
+  ```
+  DATABASE_URL=...
+  CLOUDINARY_CLOUD_NAME=...
+  CLOUDINARY_API_KEY=...
+  CLOUDINARY_API_SECRET=...
+
+  # Seguridad panel admin (opcional, recomendado)
+  ADMIN_BASIC_USER=admin
+  ADMIN_BASIC_PASSWORD=tu_password_segura
+  ```
+4. Genera el cliente de Prisma:
+    ```
+    npx prisma generate
+    ```
+5. Ejecuta el servidor de desarrollo:
     ```
     npm run dev
     ```
-5. Abre la aplicación en tu navegador en http://localhost:3000.
+6. Abre la aplicación en tu navegador en http://localhost:3000.
+
+## Detalles de review
+
+- La home (`/`) explica el alcance del proyecto y propone un orden corto para revisarlo.
+- Las rutas principales para portfolio son `/order/cafe`, `/admin/products` y `/admin/orders`.
+- Si la conexión real con MongoDB falla, el proyecto mantiene una demo navegable en varias vistas para no romper la evaluación funcional.
 
 ### Estructura del Proyecto
     

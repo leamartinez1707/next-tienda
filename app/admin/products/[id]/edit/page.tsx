@@ -4,14 +4,18 @@ import Heading from '@/components/ui/Heading'
 import EditProductForm from '@/components/products/EditProductForm'
 import ProductForm from '@/components/products/ProductForm'
 import GoBackButton from '@/components/ui/GoBackButton'
+import { getDemoProductById } from '@/src/demo/demo-store'
 
 const getProductById = async (id: string) => {
-    const product = await prisma.product.findUnique({
-        where: {
-            id
-        }
-    })
-    return product
+    try {
+        return await prisma.product.findUnique({
+            where: {
+                id
+            }
+        })
+    } catch {
+        return getDemoProductById(id) ?? null
+    }
 }
 
 const EditProduct = async ({ params }: { params: Promise<{ id: string }> }) => {

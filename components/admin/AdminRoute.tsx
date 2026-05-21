@@ -15,10 +15,17 @@ const AdminRoute = ({ link }: AdminRouteProps) => {
     const isActive = pathname.startsWith(link.url)
     return (
         <Link
-            className={`${isActive ? 'bg-amber-400' : ''} font-bold text-lg border-t border-gray-200 p-3 last-of-type:border-b`}
+            className={`mt-2 flex items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-amber-400 sm:text-base ${isActive
+                    ? 'border-amber-300 bg-amber-100 text-slate-900 shadow-sm'
+                    : 'border-slate-200 bg-white text-slate-700 hover:-translate-y-0.5 hover:border-amber-200 hover:bg-amber-50'
+                }`}
             href={link.url}
-            target={link.blank ? '_blank' : ''} >
+            target={link.blank ? '_blank' : '_self'}
+            rel={link.blank ? 'noopener noreferrer' : undefined} >
             {link.text}
+            <span className={`text-xs uppercase tracking-wide ${isActive ? 'text-amber-800' : 'text-slate-400'}`}>
+                {link.blank ? 'Externo' : 'Interno'}
+            </span>
         </Link >
     )
 }

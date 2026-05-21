@@ -1,19 +1,23 @@
 import { prisma } from "@/src/lib/prisma"
+import { getDemoPendingOrders } from "@/src/demo/demo-store"
 
 export const dynamic = 'force-dynamic'
 export const GET = async () => {
-
-  const orders = await prisma.order.findMany({
-    where: {
-      status: false
-    },
-    include: {
-      orderProducts: {
-        include: {
-          product: true
+  try {
+    const orders = await prisma.order.findMany({
+      where: {
+        status: false
+      },
+      include: {
+        orderProducts: {
+          include: {
+            product: true
+          }
         }
       }
-    }
-  })
-  return Response.json(orders)
+    })
+    return Response.json(orders)
+  } catch {
+    return Response.json(getDemoPendingOrders())
+  }
 }

@@ -3,6 +3,7 @@
 import { prisma } from "@/src/lib/prisma"
 import { ProductSchema } from "@/src/schema"
 import { revalidatePath } from "next/cache"
+import { updateDemoProduct } from "@/src/demo/demo-store"
 
 export const updateProduct = async (data: unknown, id: string) => {
 
@@ -12,12 +13,17 @@ export const updateProduct = async (data: unknown, id: string) => {
             errors: result.error.issues
         }
     }
-    await prisma.product.update({
-        where: {
-            id
-        },
-        data: result.data
-    })
+    try {
+        await prisma.product.update({
+            where: {
+                id
+            },
+            data: result.data
+        })
+    } catch {
+        updateDemoProduct(id, result.data)
+    }
 
     revalidatePath('/admin/products')
+    return { success: true }
 }

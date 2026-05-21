@@ -12,16 +12,21 @@ interface Props {
 const CategoryIcon = ({ category }: Props) => {
 
     const urlParams = useParams<{ category: string }>()
+    const isActive = urlParams.category === category.slug
+
     return (
-        <div className={`flex items-center gap-4 w-full border-t border-gray-200 p-3 last-of-type:border-b hover:bg-yellow-50 duration-150 transition-all ${urlParams.category === category.slug ? 'bg-amber-200 hover:bg-amber-200 shadow' : null} `}>
-            <div className='size-16 relative
-            '>
+        <div className={`shrink-0 rounded-2xl border border-slate-200 bg-white p-2.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-amber-200 hover:bg-amber-50 md:w-full md:rounded-none md:border-0 md:border-t md:border-gray-200 md:p-2 md:shadow-none md:hover:translate-y-0 md:hover:border-gray-200 ${isActive ? 'ring-2 ring-amber-300 md:bg-amber-200 md:ring-0 md:shadow' : ''}`}>
+            <div className='flex min-w-[7rem] flex-col items-center gap-2 md:min-w-0 md:flex-row md:gap-3'>
+                <div className='relative size-10 sm:size-11 md:size-14'>
                 <Image fill src={`/icon_${category.slug}.svg`} alt={category.name} />
+                </div>
+                <Link
+                    href={`/order/${category.slug}`}
+                    aria-current={isActive ? 'page' : undefined}
+                    className='w-full rounded-sm py-1 text-center text-xs font-bold uppercase tracking-[0.08em] text-slate-700 focus:outline-none focus:ring-2 focus:ring-amber-400 md:py-2 md:text-left md:text-sm md:tracking-normal'>
+                    {category.name}
+                </Link>
             </div>
-            <Link
-                href={`/order/${category.slug}`}
-                className='font-bold'>{category.name}
-            </Link>
         </div>
     )
 }

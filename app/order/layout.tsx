@@ -13,16 +13,15 @@ const OrderLayout = ({ children, }: Readonly<{ children: React.ReactNode; }>) =>
 
     return (
         <>
-            <div className="md:flex">
+            <div className="flex min-h-screen w-full max-w-full flex-col md:flex-row overflow-x-hidden">
 
                 <OrderSidebar />
 
-                <main className="md:flex-1 md:h-screen md:overflow-y-auto p-5">
+                <main className="flex-1 min-h-screen min-w-0 md:h-screen md:overflow-y-auto p-4 sm:p-5 md:p-6" role="main">
                     {children}
                 </main>
-
-                <OrderSummary />
             </div>
+            <OrderSummary />
             <Notification />
         </>
     )
