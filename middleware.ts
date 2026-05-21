@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { ADMIN_ROLE_HEADER_NAME, isAdminRole } from '@/src/lib/admin-auth'
 
 const ADMIN_LOGIN_PATH = '/admin/login'
 const ADMIN_DEFAULT_PATH = '/admin/products'
@@ -27,6 +28,9 @@ export const middleware = (request: NextRequest) => {
     demoUser && demoPassword ? createSessionToken(demoUser, demoPassword) : null,
   ].filter((value): value is string => Boolean(value))
 
+  const fullAdminToken = adminUser && adminPassword ? createSessionToken(adminUser, adminPassword) : null
+  const demoAdminToken = demoUser && demoPassword ? createSessionToken(demoUser, demoPassword) : null
+
   const currentToken = request.cookies.get(ADMIN_COOKIE_NAME)?.value
 
   if (request.nextUrl.pathname.startsWith(ADMIN_LOGIN_PATH)) {
@@ -43,7 +47,22 @@ export const middleware = (request: NextRequest) => {
     return NextResponse.redirect(loginUrl)
   }
 
-  return NextResponse.next()
+  const requestHeaders = new Headers(request.headers)
+  const roleHint = fullAdminToken && currentToken === fullAdminToken
+    ? 'full'
+    : demoAdminToken && currentToken === demoAdminToken
+      ? 'readonly'
+      : null
+
+  if (isAdminRole(roleHint)) {
+    requestHeaders.set(ADMIN_ROLE_HEADER_NAME, roleHint)
+  }
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  })
 }
 
 export const config = {

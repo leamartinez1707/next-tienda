@@ -1,4 +1,5 @@
 export const ADMIN_SESSION_COOKIE_NAME = 'admin_session'
+export const ADMIN_ROLE_HEADER_NAME = 'x-admin-role'
 
 type Credentials = {
   user: string
@@ -6,6 +7,8 @@ type Credentials = {
 }
 
 export type AdminRole = 'full' | 'readonly' | null
+
+const ADMIN_ROLES: Exclude<AdminRole, null>[] = ['full', 'readonly']
 
 const toToken = (credentials: Credentials) =>
   Buffer.from(`${credentials.user}:${credentials.password}`).toString('base64')
@@ -48,4 +51,23 @@ export const getAdminRoleFromSession = (token: string | undefined): AdminRole =>
   return null
 }
 
-export const canAdminWrite = (token: string | undefined) => getAdminRoleFromSession(token) === 'full'
+export const isAdminRole = (value: string | null | undefined): value is Exclude<AdminRole, null> =>
+  Boolean(value) && ADMIN_ROLES.includes(value as Exclude<AdminRole, null>)
+
+export const resolveAdminRole = (
+  token: string | undefined,
+  roleHint: string | null | undefined,
+): AdminRole => {
+  if (isAdminRole(roleHint)) return roleHint
+  return getAdminRoleFromSession(token)
+}
+
+export const canAdminManageProducts = (
+  token: string | undefined,
+  roleHint?: string | null,
+) => resolveAdminRole(token, roleHint) === 'full'
+
+export const canAdminCompleteOrders = (
+  token: string | undefined,
+  roleHint: string | null | undefined,
+) => isAdminRole(resolveAdminRole(token, roleHint))

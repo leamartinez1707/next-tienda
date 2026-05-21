@@ -5,13 +5,17 @@ import { ProductSchema } from "@/src/schema"
 import { useRouter } from "next/navigation"
 import { toast } from "react-toastify"
 import { useToastZodErrors } from "@/src/hooks/useToastZodErrors"
+import { FormEvent } from "react"
 
 const AddProductForm = ({ children }: { children: React.ReactNode }) => {
 
     const router = useRouter()
     const { showIssues } = useToastZodErrors()
 
-    const handleSubmit = async (formData: FormData) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+
+        const formData = new FormData(event.currentTarget)
         const data = {
             name: formData.get('name'),
             price: formData.get('price'),
@@ -38,7 +42,7 @@ const AddProductForm = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="bg-white mt-10 px-5 py-10 rounded-md shadow-md max-w-3xl mx-auto">
             <form
-                action={handleSubmit}
+                onSubmit={handleSubmit}
                 className="space-y-5"
                 noValidate>
 

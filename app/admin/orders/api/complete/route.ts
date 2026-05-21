@@ -4,15 +4,16 @@ import { completeDemoOrder } from "@/src/demo/demo-store"
 import { withTimeout } from "@/src/lib/with-timeout"
 import { isDemoFallbackEnabled } from "@/src/lib/demo-fallback"
 import { NextRequest } from "next/server"
-import { ADMIN_SESSION_COOKIE_NAME, canAdminWrite } from "@/src/lib/admin-auth"
+import { ADMIN_ROLE_HEADER_NAME, ADMIN_SESSION_COOKIE_NAME, canAdminCompleteOrders } from "@/src/lib/admin-auth"
 
 export const dynamic = 'force-dynamic'
 
 export const POST = async (request: NextRequest) => {
+  const roleFromMiddleware = request.headers.get(ADMIN_ROLE_HEADER_NAME)
   const sessionToken = request.cookies.get(ADMIN_SESSION_COOKIE_NAME)?.value
-  if (!canAdminWrite(sessionToken)) {
+  if (!canAdminCompleteOrders(sessionToken, roleFromMiddleware)) {
     return Response.json(
-      { success: false, errors: [{ message: 'Modo solo lectura: no puedes completar ordenes.' }] },
+      { success: false, errors: [{ message: 'No autorizado para completar ordenes.' }] },
       { status: 403 },
     )
   }
