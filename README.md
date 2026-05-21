@@ -75,9 +75,13 @@ DB_QUERY_TIMEOUT_MS=8000
 # Opcional: en produccion queda false por defecto
 DEMO_FALLBACK_ENABLED=false
 
-# Opcional: proteccion de rutas /admin
+# Opcional: bloqueo basico para demo en rutas /admin (no reemplaza auth real)
 ADMIN_BASIC_USER=admin
 ADMIN_BASIC_PASSWORD=tu_password_segura
+
+# Opcional: credenciales demo visibles en /admin/login (solo lectura)
+ADMIN_DEMO_USER=demo
+ADMIN_DEMO_PASSWORD=demo123
 ```
 
 4. Generar Prisma Client
@@ -113,7 +117,22 @@ http://localhost:3000
 - `CLOUDINARY_API_SECRET`: secreto de Cloudinary
 - `DB_QUERY_TIMEOUT_MS`: timeout de queries Prisma con fallback de 8000ms
 - `DEMO_FALLBACK_ENABLED`: habilita fallback demo (`true/false`)
-- `ADMIN_BASIC_USER` y `ADMIN_BASIC_PASSWORD`: basic auth para `/admin`
+- `ADMIN_BASIC_USER` y `ADMIN_BASIC_PASSWORD`: usuario admin con acceso total (no se recomienda publicarlo)
+- `ADMIN_DEMO_USER` y `ADMIN_DEMO_PASSWORD`: usuario demo de solo lectura para mostrar el panel
+
+### Credenciales de demo para recruiters
+
+La pantalla ` /admin/login ` muestra automaticamente las credenciales de demo si existen estas variables:
+
+- `ADMIN_DEMO_USER`
+- `ADMIN_DEMO_PASSWORD`
+
+Esto ayuda a que una persona que revisa el portfolio pueda entrar rapido sin buscar datos en el README.
+
+Con este esquema:
+
+- usuario `demo`: puede navegar el admin, pero no crear/editar/completar acciones
+- usuario `full`: mantiene acceso total para gestion real
 
 ## Nota de produccion (Vercel)
 

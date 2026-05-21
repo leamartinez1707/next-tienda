@@ -110,6 +110,11 @@ const newVersionExtra = {
 
 const contactLinks = [
   {
+    label: "Portfolio",
+    value: "www.leandromartinez.com.uy",
+    href: "https://www.leandromartinez.com.uy",
+  },
+  {
     label: "Telefono",
     value: "+598 95 220 063",
     href: "tel:+59895220063",
@@ -215,6 +220,14 @@ export default function Home() {
                   </span>
                 ))}
               </div>
+              <a
+                href="https://github.com/leamartinez1707/next-tienda"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-black"
+              >
+                <span>Ver repositorio en GitHub</span>
+              </a>
             </div>
           </aside>
         </div>

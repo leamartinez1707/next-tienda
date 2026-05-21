@@ -3,10 +3,20 @@ import { OrderIdSchema } from "@/src/schema"
 import { completeDemoOrder } from "@/src/demo/demo-store"
 import { withTimeout } from "@/src/lib/with-timeout"
 import { isDemoFallbackEnabled } from "@/src/lib/demo-fallback"
+import { NextRequest } from "next/server"
+import { ADMIN_SESSION_COOKIE_NAME, canAdminWrite } from "@/src/lib/admin-auth"
 
 export const dynamic = 'force-dynamic'
 
-export const POST = async (request: Request) => {
+export const POST = async (request: NextRequest) => {
+  const sessionToken = request.cookies.get(ADMIN_SESSION_COOKIE_NAME)?.value
+  if (!canAdminWrite(sessionToken)) {
+    return Response.json(
+      { success: false, errors: [{ message: 'Modo solo lectura: no puedes completar ordenes.' }] },
+      { status: 403 },
+    )
+  }
+
   const payload = await request.json().catch(() => null)
   const result = OrderIdSchema.safeParse(payload)
 
