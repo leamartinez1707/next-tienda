@@ -23,7 +23,7 @@ export default async function AdminLayout({
                     {adminRole === 'readonly' ? (
                         <div className="mb-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
                             <p className="font-semibold">Modo demo: solo lectura</p>
-                            <p className="mt-1">Puedes recorrer el panel, pero no crear, editar ni completar acciones.</p>
+                            <p className="mt-1">Puedes recorrer el panel y completar pedidos, pero no crear ni editar productos.</p>
                         </div>
                     ) : null}
                     {children}

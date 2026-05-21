@@ -9,6 +9,10 @@ type Credentials = {
 export type AdminRole = 'full' | 'readonly' | null
 
 const ADMIN_ROLES: Exclude<AdminRole, null>[] = ['full', 'readonly']
+const DEMO_ADMIN_CREDENTIALS: Credentials = {
+  user: 'demo',
+  password: 'demo123',
+}
 
 const toToken = (credentials: Credentials) =>
   Buffer.from(`${credentials.user}:${credentials.password}`).toString('base64')
@@ -21,12 +25,8 @@ export const getFullAdminCredentials = (): Credentials | null => {
   return { user, password }
 }
 
-export const getDemoAdminCredentials = (): Credentials | null => {
-  const user = process.env.ADMIN_DEMO_USER?.trim()
-  const password = process.env.ADMIN_DEMO_PASSWORD
-
-  if (!user || !password) return null
-  return { user, password }
+export const getDemoAdminCredentials = (): Credentials => {
+  return DEMO_ADMIN_CREDENTIALS
 }
 
 export const getFullAdminToken = (): string | null => {

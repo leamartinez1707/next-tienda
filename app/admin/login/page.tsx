@@ -1,8 +1,9 @@
 import Link from "next/link"
+import { getDemoAdminCredentials } from "@/src/lib/admin-auth"
 
 const getErrorMessage = (error: string | undefined) => {
   if (error === 'invalid') return 'Credenciales invalidas. Intenta nuevamente.'
-  if (error === 'disabled') return 'Login admin deshabilitado: faltan variables de entorno.'
+  if (error === 'disabled') return 'El acceso admin no esta disponible en este entorno.'
   return null
 }
 
@@ -14,9 +15,7 @@ const LoginPage = async ({
   const { next, error } = await searchParams
   const safeNext = next?.startsWith('/admin') ? next : '/admin/products'
   const errorMessage = getErrorMessage(error)
-  const demoUser = process.env.ADMIN_DEMO_USER
-  const demoPassword = process.env.ADMIN_DEMO_PASSWORD
-  const showDemoCredentials = Boolean(demoUser && demoPassword)
+  const demoCredentials = getDemoAdminCredentials()
 
   return (
     <div className="mx-auto flex min-h-[70dvh] w-full max-w-xl items-center justify-center px-3 py-8 sm:px-4">
@@ -25,17 +24,11 @@ const LoginPage = async ({
         <h1 className="mt-2 text-2xl font-black text-slate-950">Ingresar al panel</h1>
         <p className="mt-2 text-sm text-slate-600">Login rapido para probar el panel administrativo.</p>
 
-        {showDemoCredentials ? (
-          <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-900">
-            <p className="font-semibold">Credenciales de demo (solo lectura)</p>
-            <p className="mt-1">Usuario: <span className="font-mono font-semibold">{demoUser}</span></p>
-            <p>Password: <span className="font-mono font-semibold">{demoPassword}</span></p>
-          </div>
-        ) : (
-          <p className="mt-4 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
-            Define <span className="font-mono">ADMIN_BASIC_USER</span> y <span className="font-mono">ADMIN_BASIC_PASSWORD</span> para habilitar acceso.
-          </p>
-        )}
+        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-900">
+          <p className="font-semibold">Credenciales de demo (solo lectura)</p>
+          <p className="mt-1">Usuario: <span className="font-mono font-semibold">{demoCredentials.user}</span></p>
+          <p>Password: <span className="font-mono font-semibold">{demoCredentials.password}</span></p>
+        </div>
 
         {errorMessage ? (
           <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-medium text-red-700">

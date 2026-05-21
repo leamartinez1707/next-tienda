@@ -78,10 +78,6 @@ DEMO_FALLBACK_ENABLED=false
 # Opcional: bloqueo basico para demo en rutas /admin (no reemplaza auth real)
 ADMIN_BASIC_USER=admin
 ADMIN_BASIC_PASSWORD=tu_password_segura
-
-# Opcional: credenciales demo visibles en /admin/login (solo lectura)
-ADMIN_DEMO_USER=demo
-ADMIN_DEMO_PASSWORD=demo123
 ```
 
 4. Generar Prisma Client
@@ -118,20 +114,18 @@ http://localhost:3000
 - `DB_QUERY_TIMEOUT_MS`: timeout de queries Prisma con fallback de 8000ms
 - `DEMO_FALLBACK_ENABLED`: habilita fallback demo (`true/false`)
 - `ADMIN_BASIC_USER` y `ADMIN_BASIC_PASSWORD`: usuario admin con acceso total (no se recomienda publicarlo)
-- `ADMIN_DEMO_USER` y `ADMIN_DEMO_PASSWORD`: usuario demo de solo lectura para mostrar el panel
+
 
 ### Credenciales de demo para recruiters
 
-La pantalla ` /admin/login ` muestra automaticamente las credenciales de demo si existen estas variables:
+La pantalla ` /admin/login ` muestra credenciales demo fijas para facilitar pruebas sin configurar entorno:
 
-- `ADMIN_DEMO_USER`
-- `ADMIN_DEMO_PASSWORD`
-
-Esto ayuda a que una persona que revisa el portfolio pueda entrar rapido sin buscar datos en el README.
+- usuario: `demo`
+- password: `demo123`
 
 Con este esquema:
 
-- usuario `demo`: puede navegar el admin, pero no crear/editar/completar acciones
+- usuario `demo`: puede navegar el admin y completar pedidos, pero no crear/editar productos
 - usuario `full`: mantiene acceso total para gestion real
 
 ## Nota de produccion (Vercel)

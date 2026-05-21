@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
+import TopNavbar from "@/components/ui/TopNavbar";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${manrope.variable} ${manrope.className} bg-gray-100`}>
+        <TopNavbar />
         {children}
       </body>
     </html>
