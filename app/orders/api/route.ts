@@ -1,6 +1,5 @@
 import { prisma } from "@/src/lib/prisma"
 import { getDemoReadyOrders } from "@/src/demo/demo-store"
-import { withTimeout } from "@/src/lib/with-timeout"
 import { isDemoFallbackEnabled } from "@/src/lib/demo-fallback"
 
 export const dynamic = 'force-dynamic'
@@ -8,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export const GET = async () => {
   try {
-    const orders = await withTimeout(prisma.order.findMany({
+    const orders = await prisma.order.findMany({
       take: 10,
       where: {
         orderReadyAt: {
@@ -25,7 +24,7 @@ export const GET = async () => {
           }
         }
       }
-    }))
+    })
     return Response.json(orders)
   } catch (error) {
     if (isDemoFallbackEnabled) {
