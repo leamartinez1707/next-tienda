@@ -1,4 +1,3 @@
-import { completeOrder } from '@/actions/complete-order-action'
 import { OrderWithProducts } from '@/src/types'
 import { formatCurrency } from '@/src/utils'
 import OrderCardButton from './OrderCardButton'
@@ -25,11 +24,16 @@ const OrderCard = ({ order }: OrderCardProps) => {
             await mutate<OrderWithProducts[]>(
                 '/admin/orders/api',
                 async (currentOrders = []) => {
-                    const formData = new FormData()
-                    formData.append('order_id', order.id)
+                    const request = await fetch('/admin/orders/api/complete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ orderId: order.id }),
+                    })
 
-                    const response = await completeOrder(formData)
-                    if (!response?.success) {
+                    const response = await request.json()
+                    if (!request.ok || !response?.success) {
                         throw new Error('No se pudo completar la orden')
                     }
 

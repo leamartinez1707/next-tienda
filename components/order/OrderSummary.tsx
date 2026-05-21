@@ -4,7 +4,6 @@ import { useStore } from "@/src/store/store"
 import ProductDetails from "./ProductDetails"
 import { useMemo, useState } from "react"
 import { formatCurrency } from "@/src/utils"
-import { handleCreateOrder } from "@/actions/create-order-action"
 import { toast } from "react-toastify"
 import { mutate } from "swr"
 import { notifyOrderUpdate } from "@/src/hooks/useOrderChannelSync"
@@ -18,7 +17,9 @@ const OrderSummary = () => {
     const [isOpen, setIsOpen] = useState(false)
 
 
-    const createOrder = async (formData: FormData) => {
+    const createOrder = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        const formData = new FormData(event.currentTarget)
         const name = String(formData.get('name') ?? '').trim()
 
         if (name.length < 2) {
@@ -37,7 +38,26 @@ const OrderSummary = () => {
             order
         }
 
-        const response = await handleCreateOrder(data)
+        let response: { success?: boolean; errors?: { message: string }[] }
+
+        try {
+            const request = await fetch('/order/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+
+            response = await request.json()
+            if (!request.ok) {
+                throw new Error('No se pudo crear el pedido')
+            }
+        } catch {
+            toast.error('No se pudo crear el pedido')
+            return
+        }
+
         if (response?.errors) {
             response.errors.forEach((issue) => {
                 toast.error(issue.message)
@@ -120,7 +140,7 @@ const OrderSummary = () => {
                                     </p>
 
                                     <form
-                                        action={createOrder}
+                                        onSubmit={createOrder}
                                         className="mt-3 w-full space-y-2.5"
                                         noValidate>
                                         <input
